@@ -1,15 +1,19 @@
-//jaden mardini - prog71990 - sec1 - student#8762993 
-//all the work from <main.c>
-
-#pragma once
-#define _CRT_SECURE_NO_WARNINGS
 #ifndef STACK_H
 #define STACK_H
 
-//function declarations for stack operations
-int full(void);        //checks if the stack is full
-int empty(void);       //checks if the stack is empty
-void push(char);       //pushes a character onto the stack
-char pop(void);        //pops a character off the stack
+#include "../include/static_stack.h"
+
+#define full() char_stack_is_full()
+#define empty() char_stack_is_empty()
+
+static inline int push(char c) {
+    return char_stack_push(c) == CHAR_STACK_SUCCESS ? 1 : 0;
+}
+
+static inline char pop(void) {
+    char c = '\0';
+    CharStackResult result = char_stack_pop(&c);
+    return (result == CHAR_STACK_SUCCESS) ? c : '\0';
+}
 
 #endif

@@ -1,40 +1,46 @@
-//jaden mardini - prog71990 - sec1 - student#8762993 
+/**
+ * @file main.c
+ * @brief Improved String Reversal Program
+ * @author Jaden Mardini
+ */
 
-//a program that asks the user to input a string.The program then should
-//push the characters of the string onto a stack(of characters), one by one, and
-//then pop the characters from the stack and display them.This results in
-//displaying the string in reverse order
-
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
-#include "stack.h"
+#include <string.h>
+#include "../include/static_stack.h"
 
-int main(void)
-{
-    char inputChar;
+#define INPUT_BUFFER_SIZE 256
 
-    printf("enter a string (press enter to reverse):\n");
-
-    //push characters onto the stack
-    while ((inputChar = getchar()) != '\n')
-    {
-        if (!full()) {
-            push(inputChar);
-        }
-        else {
-            printf("error: stack is full. cannot push '%c'.\n", inputChar);
-            break;
-        }
+int main(void) {
+    printf("=== Professional String Reversal Using Character Stack ===\n");
+    printf("Author: Jaden Mardini\n\n");
+    
+    char input_buffer[INPUT_BUFFER_SIZE];
+    
+    printf("Enter a string (press Enter to reverse): ");
+    if (!fgets(input_buffer, sizeof(input_buffer), stdin)) {
+        fprintf(stderr, "Error: Failed to read input\n");
+        return 1;
     }
-
-    printf("reversed string:\n");
-
-    //pop and print characters from the stack
-    while (!empty())
-    {
-        printf("%c", pop());
+    
+    size_t length = strlen(input_buffer);
+    if (length > 0 && input_buffer[length - 1] == '\n') {
+        input_buffer[length - 1] = '\0';
     }
-
-    printf("\n");
+    
+    if (strlen(input_buffer) == 0) {
+        printf("No input provided. Exiting.\n");
+        return 0;
+    }
+    
+    char output_buffer[INPUT_BUFFER_SIZE];
+    CharStackResult result = char_stack_reverse_string(input_buffer, output_buffer, sizeof(output_buffer));
+    
+    if (result == CHAR_STACK_SUCCESS) {
+        printf("Original: \"%s\"\n", input_buffer);
+        printf("Reversed: \"%s\"\n", output_buffer);
+    } else {
+        printf("Error: %s\n", char_stack_error_string(result));
+    }
+    
     return 0;
 }
